@@ -14,4 +14,22 @@
     - `Pug`
     - `(req,res)=>`
 
- 
+ # 0.2 ExpressJS로 서버 구축하기
+   - Console
+     - `npm init -y`
+       - `package.json`
+       - `scripts`에 `dev`: `nodemon`
+     - `touch README.md`
+     - `npm i nodemon -D`
+     - `touch babel.config.json`
+       - `presets`: [`@babel/preset-env`]
+     - `touch nodemon.json`
+       - `exec`: `[메인js파일]`
+     - `mkdir src`
+     - `touch src/server.js`
+     - `git init .`
+     - `npm i @babel/core @babel/cli @babel/node @babel/preset-env -D`
+     - `touch .gitignore`
+       - `/node_modules`
+     - `npm i express`
+     - `npm i pug`
