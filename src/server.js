@@ -15,8 +15,8 @@ const ioServer = SocketIO(httpServer);
 
 ioServer.on("connection", (socket) => {
     socket.on("room_enter", (roomName, done) => {
-        console.log(roomName);
-        setTimeout(() => done("hello from the bk"), 10000);
+        socket.join(roomName);
+        done();
     });
 });
 /*

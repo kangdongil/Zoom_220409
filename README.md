@@ -161,3 +161,12 @@
     - 문자열(String)에 한정되지 않고 다양한 데이터 타입을 보낼 수 있다.
     - 다만, 마지막 매개변수는 프론트엔드에 발생하는 것으로 통상적으로 `이벤트처리 마지막으로 실행하는 함수`가 들어간다.
       - 이때 인수를 설정하면 백엔드에서 프론트엔드로 데이터를 보내는것도 가능하다
+  
+# 2.4 
+  - room: 
+  - `socket.join([room명])`
+  - `socket.id`: socket의 고유id
+  - `socket.rooms`: socket이 접속하고 있는 rooms의 목록
+    - socket마다 혼자있는 room이 있으며 이름은 id와 같다.
+  - `socket.onAny((event) => ~ )`
+  - `socket.leave(room)`
