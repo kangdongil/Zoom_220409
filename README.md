@@ -59,7 +59,8 @@
       - 사용자의 request 없이는 서버가 임의로 데이터를 보낼 수 없음.
     - WebSocket
       - 사용자의 request를 서버가 accept하면 connection이 성립됨
-      - connection이 성립하면 양방향(bi-directional) 소통이 가능해짐.
+      - connection이 성립하면 실시간(real-time) 양방향(bi-directional) 소통이 가능해짐.
+      - 또한 이를 기반으로 이벤트 발생 시 이를 이용한 기능을 구현가능함.(event-based communication)
 
 # 1.2 Express 서버에 WebSockets 사용하기
   - ws 설치하기
@@ -133,3 +134,17 @@
       - 미리 `socket["nickname"] = "Anonymous";`로 정하기
       - `socket["nickname"] = message.payload;`
 
+# 2.0 SocketIO 알아보기
+  - SocketIO: websocket을 비롯해 양방향 통신을 지원하는 프레임워크
+  - SocketIO의 장점
+    - webSockets가 가능하지 않을 때 자동적으로 대안을 실행함.
+    - `http long-polling`
+    - 재연결 자동 시도
+
+# 2.1 SocketIO 설치하기
+  - `npm i socket.io`
+  - server.js에 `socket.io` import하기
+  - http서버에 `socket.io` 덮씌우기
+  - `ioServer.on("connection", (socket) => ~)`
+  - template에 `script(src="/socket.io/socket.io.js")`해서 브라우저에 `socket.io` 가져오기
+  - `const socket = io();`
