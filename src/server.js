@@ -17,10 +17,20 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
     sockets.push(socket);
+    socket["nickname"] = "Anonymous";
     console.log("Connected At Browser ✅");
     socket.on("close", () => console.log("Disconnected from Browser ❌"));
-    socket.on("message", (message) => {
-        sockets.forEach(aSocket => aSocket.send(message.toString()));
+    socket.on("message", (aMessage) => {
+        const message = JSON.parse(aMessage);
+        switch(message.type) {
+            case "new_message":
+                sockets.forEach(aSocket => aSocket.send(
+                    `${socket.nickname.toString()}: ${message.payload.toString()}`));
+                break;
+            case "nickname":
+                socket["nickname"] = message.payload;
+                break;
+        }
     });
     socket.send("Hi!");
 });

@@ -94,3 +94,42 @@
       - `socket.send("[메세지]")`
     - 브라우저에서 보낸 메세지에 대해 처리하기
       - `socket.on("message", (message) ~)`
+
+# 1.6 socket들을 연결해 실시간 대화 구현하기
+  - sockets 배열에 socket 추가하기
+    - `const sockets = [];`
+    - `sockets.push(socket)`
+  - 각 socket마다 message 보내기
+    - `sockets.forEach(aSocket => aSocket.send(message.toString()));`
+  - 채팅방 기능 간략하게 구현하기
+    - HTML
+      - `ul`로 채팅내용을 `li`로 받기
+      - `form/input/button`
+    - JavaScript
+      - `document.querySelector`로 form 가져오기
+      - `.addEventListener` `submit` 이벤트시 `function(event)` 실행하기
+      - submit default 행동 초기화하기(`event.preventDefault();`)
+      - `input`값을 받아 `socket.send`하기
+
+# 1.9 nickname 설정하기(json형식으로 데이터 주고받기)
+  - socket이 message의 종류를 구분할 수 있도록 json형식으로 message를 보낸다
+  - 다만 ws는 websockets의 javascript implementation이므로 json object로 보내기보다 string으로 바꾸어 보내는 것이 바람직하다
+  - json message 만들기(`app.js`)
+    - `function makeMessage(type, payload) {~}`
+    - `const msg = { type, payload };`
+    - `return JSON.stringify(msg);`
+    - `socket.send(makeMessage("[message_종류]", input.value));`
+  - stringify된 message를 받았을 때,(`server.js`)
+    - `socket.on("message",(aMessage) => ~)`
+    - `message = JSON.parse(aMessage)`
+    - `switch문`으로 message의 type별로 처리하기
+      - `switch(message.type) {~}` 
+      - `case [TYPE명]:`
+      - case 마지막에 `break`하기
+    - `new_message`의 경우, nickname과 함께 메시지 보내기
+      - `닉네임`: `socket.nickname.toString()`
+      - `메시지내용`: `message.payload.toString()`
+    - `nickname`은 socket에 넣고 사용하기
+      - 미리 `socket["nickname"] = "Anonymous";`로 정하기
+      - `socket["nickname"] = message.payload;`
+
