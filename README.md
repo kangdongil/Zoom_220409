@@ -169,4 +169,5 @@
   - `socket.rooms`: socket이 접속하고 있는 rooms의 목록
     - socket마다 혼자있는 room이 있으며 이름은 id와 같다.
   - `socket.onAny((event) => ~ )`
+  - `socket.to([Room이름]).emit(~);`
   - `socket.leave(room)`
