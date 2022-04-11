@@ -148,3 +148,16 @@
   - `ioServer.on("connection", (socket) => ~)`
   - template에 `script(src="/socket.io/socket.io.js")`해서 브라우저에 `socket.io` 가져오기
   - `const socket = io();`
+
+# 2.2 SocketIO로 FrontEnd와 BackEnd 데이터 주고받기
+  - `ioServer`가 `connection` 이벤트를 받았을 때, `socket` argument를 받을 수 있다.
+  - `server.js`
+    - `socket.on`은 특정 이벤트가 발생할 때 함수를 실행할 수 있다.
+      - `socket.on("[이벤트명]", ([socket.emit으로_받은_데이터]) => ~;)`
+    - `webSockets`과 다른 점은 `message` 이벤트가 아닌 임의로 이벤트 이름을 줄 수 있다는 것이다.
+  - `app.js`
+    - `socket.emit`는 이벤트를 발생시키는 것으로 다음과 같은 매개변수를 가진다.
+      - `socket.emit("[이벤트명]", [백엔드에_보낼_데이터]들, ...)`
+    - 문자열(String)에 한정되지 않고 다양한 데이터 타입을 보낼 수 있다.
+    - 다만, 마지막 매개변수는 프론트엔드에 발생하는 것으로 통상적으로 `이벤트처리 마지막으로 실행하는 함수`가 들어간다.
+      - 이때 인수를 설정하면 백엔드에서 프론트엔드로 데이터를 보내는것도 가능하다
