@@ -1,3 +1,6 @@
+## 서버 켜고 링크 들어가기
+- `https://zoom-clone--susze.run.goorm.io/`
+
 # 0.1 요구사항
   - JS
     - `document.querySelector/getElementByID`
@@ -50,17 +53,17 @@
     - `script(src="/public/js/app.js")`
 
 # 1.1 HTTP vs. WebSockets
-    - 프로토콜(protocol)
-      - 두 컴퓨터간 데이터를 소통하는 방식
-      - 사용자-서버, 서버-서버 모두 가능하다
-    - HTTP
-      - 사용자가 request하면 서버가 response하는 방식
-      - stateless: backend가 사용자를 기억하지 못함
-      - 사용자의 request 없이는 서버가 임의로 데이터를 보낼 수 없음.
-    - WebSocket
-      - 사용자의 request를 서버가 accept하면 connection이 성립됨
-      - connection이 성립하면 실시간(real-time) 양방향(bi-directional) 소통이 가능해짐.
-      - 또한 이를 기반으로 이벤트 발생 시 이를 이용한 기능을 구현가능함.(event-based communication)
+  - 프로토콜(protocol)
+    - 두 컴퓨터간 데이터를 소통하는 방식
+    - 사용자-서버, 서버-서버 모두 가능하다
+  - HTTP
+    - 사용자가 request하면 서버가 response하는 방식
+    - stateless: backend가 사용자를 기억하지 못함
+    - 사용자의 request 없이는 서버가 임의로 데이터를 보낼 수 없음.
+  - WebSocket
+    - 사용자의 request를 서버가 accept하면 connection이 성립됨
+    - connection이 성립하면 실시간(real-time) 양방향(bi-directional) 소통이 가능해짐.
+    - 또한 이를 기반으로 이벤트 발생 시 이를 이용한 기능을 구현가능함.(event-based communication)
 
 # 1.2 Express 서버에 WebSockets 사용하기
   - ws 설치하기
@@ -162,12 +165,30 @@
     - 다만, 마지막 매개변수는 프론트엔드에 발생하는 것으로 통상적으로 `이벤트처리 마지막으로 실행하는 함수`가 들어간다.
       - 이때 인수를 설정하면 백엔드에서 프론트엔드로 데이터를 보내는것도 가능하다
   
-# 2.4 
-  - room: 
-  - `socket.join([room명])`
+# 2.4.1 SocketIO 문서 살펴보기: socket
   - `socket.id`: socket의 고유id
   - `socket.rooms`: socket이 접속하고 있는 rooms의 목록
-    - socket마다 혼자있는 room이 있으며 이름은 id와 같다.
+    - socket마다 혼자있는 room이 있으며 그 room 이름은 id와 같다.
+	- `socket.rooms.forEach`를 사용하면 socket이 접속한 모든 rooms에 이벤트를 발생시킬 수 있다.
   - `socket.onAny((event) => ~ )`
-  - `socket.to([Room이름]).emit(~);`
-  - `socket.leave(room)`
+    - socket에서 발생하는 모든 event에 대해 다룰 수 있음.
+
+# 2.4.2 SocketIO 문서 살펴보기: room
+  - room: socket들이 공유하는 공간
+  - socket이 특정 room에 join하게 하기
+    - `socket.join([room명])`
+  - `socket.to("[Rooms]").emit([이벤트명]);`
+    - 해당 Rooms에 접속한 Socket들에게 일괄 이벤트를 발생시킨다.
+    - [Rooms]는 한 room, rooms, room Array 모두 가능하다.
+  - `socket.on("disconnecting", () => ~)`
+    - socket의 접속이 끊어질 때 이벤트
+	
+# 2.4.3 SocketIO 문서 살펴보기: server
+  - `io.sockets.emit(~)`
+    - 모두에게 message 보내기
+  - `io.socketsJoin("~");`
+    - 모든 socket들을 특정 room으로 이동시키기
+  - `io.in("[기존_ROOM명]").socketsJoin([이동_ROOM명])`
+    - 특정 room에 접속한 socket들을 다른 room으로 이동시키기
+  
+  
