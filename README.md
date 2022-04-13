@@ -243,4 +243,9 @@
     - 특정 개체의 존재여부를 간단히 표현하는 법
 	- [문서_살펴보기](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 	
-	
+# 2.11 SocketIO 어드민 패널 만들기
+  - `npm i @socket.io/admin-ui`
+  - Configuration
+    - [Link](src/server.js)
+  - `https://admin.socket.io/`
+  - `https://zoom-clone--susze.run.goorm.io/admin`
