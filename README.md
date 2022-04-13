@@ -185,10 +185,39 @@
 	
 # 2.4.3 SocketIO 문서 살펴보기: server
   - `io.sockets.emit(~)`
-    - 모두에게 message 보내기
+    - 모두에게 event나 message 보내기
   - `io.socketsJoin("~");`
     - 모든 socket들을 특정 room으로 이동시키기
   - `io.in("[기존_ROOM명]").socketsJoin([이동_ROOM명])`
     - 특정 room에 접속한 socket들을 다른 room으로 이동시키기
   
+# 2.8.0 Adapter란,
+  - socket들을 직접 관리하는 개체. 서비스 규모가 커짐에 따라 adapter의 수도 늘어난다
+  - 기본적으로 socketIO는 메모리를 adapter로 사용한다
+  - 접속하는 socket이 늘어날수록 유지해야하는 connection의 수도 증가하므로 DB를 활용한 adapter로 대체해줘야 한다.
+  - adapter의 수는 여러개일 수 있으며, 이 경우 DB를 이용해 서버간 통신을 한다
+  - Adapter을 이용해 할 수 있는 것들
+    - 어떤 socket이 연결되었는지, 지금 몇 개의 room이 있는지 정보를 재공함
+
+# 2.8.1 공개채팅방 목록 만들기
+  - Template
+    - 방 접속하기 div에 ul 만들기
+  - `server.js`
+    - 방에 들어가는 이벤트 발생 시, 모든 socket들에게 room_change 이벤트를 emit한다
+	- 방을 나가는 이벤트에도 마찬가지로 room_change 이벤트를 발생시킨다
+	  - `socket.on("disconnect", ~)`
+	- room_change 이벤트를 emit할 때, 채팅방 개수를 return하는 함수를 보낸다
+  - 채팅방개수 세는 함수 만들기
+    - `ioServer.sockets.adapter`에서 `sids`와 `rooms` 가져오기
+	- `sids`와 `rooms`는 map Object다
+	- socketID에서는 기본적으로 나만의 채팅방을 제공한다. 따라서, sids(socketids)와 rooms를 비교해 공개 채팅방들만 추려낼 수 있다
+	- 각 rooms key를(forEach) sids의 key와 비교해 다른 것(undefined)들을 array에 넣어 return한다.
+  - `app.js`
+    - room_change 이벤트 발생할 시
+	- ul 초기화해주기
+	- 공개 채팅방을 각각(forEach) ul에 li로 추가해주기
   
+  * Map Object: `key-value 쌍` 데이터를 담은 그룹
+    - Map 개체 선언하기: `new Map();`
+	- Map item 추가하기: `[MAP].set();`
+	- item의 key로 value 불러오기: `[MAP].get([KEY])`
