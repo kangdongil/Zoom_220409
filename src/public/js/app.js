@@ -52,11 +52,15 @@ function handleRoomSubmit(event) {
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on("welcome", (userName)=> {
+socket.on("welcome", (userName, countVisitors)=> {
+	const h3 = room.querySelector("h3");
+    h3.innerText = `방이름: ${roomName} (${countVisitors})`;
     addMessage(`${userName} 접속했습니다.`);
 })
 
-socket.on("bye", (userName) => {
+socket.on("bye", (userName, countVisitors) => {
+    const h3 = room.querySelector("h3");
+    h3.innerText = `방이름: ${roomName} (${countVisitors})`;
     addMessage(`${userName} 방을 나갔습니다.`);
 })
 

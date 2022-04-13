@@ -185,7 +185,7 @@
 	
 # 2.4.3 SocketIO 문서 살펴보기: server
   - `io.sockets.emit(~)`
-    - 모두에게 event나 message 보내기
+    - 모두에게 event나 message 보내기(=broadcast)
   - `io.socketsJoin("~");`
     - 모든 socket들을 특정 room으로 이동시키기
   - `io.in("[기존_ROOM명]").socketsJoin([이동_ROOM명])`
@@ -221,3 +221,26 @@
     - Map 개체 선언하기: `new Map();`
 	- Map item 추가하기: `[MAP].set();`
 	- item의 key로 value 불러오기: `[MAP].get([KEY])`
+	
+# 2.10 채팅방 참여자 수 구하기
+  - `server.js`
+    - "room_enter"와 "disconnecting" 이벤트가 발생하면,
+	- 해당 room에 채팅방 참여자 수를 emit한다
+	- 다만, "disconnecting"의 경우 1을 뺀다
+  - 채팅방 참여자 수 세는 함수 구하기
+    - rooms는 Set을 return한다
+	- `ioServer.sockets.adapter.rooms.get(roomName)?.size`;
+  - `app.js`
+    - `welcome`과 `bye`이벤트 발생하면 값을 return한다
+  
+  * Set Object: 중복 값을 제거한 집합(Array)
+    - Set 개체 선언하기: `new Set();`
+	- Set item 추가하기: `[SET].add([ITEM]);`
+	- Set이 특정 item을 가지는지 확인하기: `[SET].has([ITEM]);`
+	- Set item 지우기: `[SET].delete([ITEM]);`
+	- Set의 item 개수 구하기: `[SET].size`
+  * Optional Chaining(ES2020)
+    - 특정 개체의 존재여부를 간단히 표현하는 법
+	- [문서_살펴보기](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+	
+	
